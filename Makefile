@@ -45,7 +45,7 @@ build: build-config
 		tpcc
 
 .PHONY: push
-push:
+push: build
 	${EXPORTS} \
 		${DOCKER_COMPOSE} \
 		-f docker-compose.yaml \
