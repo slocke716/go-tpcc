@@ -13,7 +13,7 @@ var cfgFile string
 
 var rootCmd = &cobra.Command{
 	Use:   "go-tpcc",
-	Short: "TPC-C implementation for various databases. Currently only MongoDB, MySQL, and PostgreSQL are supported",
+	Short: "TPC-C implementation for various databases. Currently only MySQL, and PostgreSQL are supported",
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -28,10 +28,9 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	//rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.mongo-tpcc.yaml)")
 	rootCmd.PersistentFlags().String("uri", "", "DSN")
 	rootCmd.PersistentFlags().String("db", "", "database name to use")
-	rootCmd.PersistentFlags().String("dbdriver", "mysql", "db driver to use (mongodb|mysql)")
+	rootCmd.PersistentFlags().String("dbdriver", "mysql", "db driver to use (postgresql|mysql)")
 	rootCmd.PersistentFlags().Bool("trx", false, "use trx?. false by default")
 }
 
@@ -48,9 +47,8 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name ".mongo-tpcc" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".mongo-tpcc")
+		//viper.SetConfigName(".mongo-tpcc")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match

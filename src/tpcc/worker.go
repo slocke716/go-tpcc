@@ -38,11 +38,6 @@ func NewWorker(ctx context.Context, configuration *Configuration, wg *sync.WaitG
 
 	sc, _ := NewScaleParameters(configuration.ScaleFactor, NUM_ITEMS, configuration.WareHouses, DISTRICTS_PER_WAREHOUSE, CUSTOMERS_PER_DISTRICT, INITIAL_NEW_ORDERS_PER_DISTRICT)
 
-	den := false
-	if configuration.DBDriver == "mongodb" {
-		den = true
-	}
-
 	d, err := databases.NewDatabase(configuration.DBDriver, configuration.URI, configuration.DBName, "a", "b", configuration.Transactions, false)
 	if err != nil {
 		return nil, err
@@ -60,7 +55,7 @@ func NewWorker(ctx context.Context, configuration *Configuration, wg *sync.WaitG
 		ctx:          ctx,
 		wg:           wg,
 		c:            c,
-		denormalized: den,
+		denormalized: false,
 	}
 
 	return w, nil

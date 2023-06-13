@@ -1,11 +1,12 @@
 package databases
 
 import (
-	"github.com/slocke716/go-tpcc/databases/mongodb"
+	"fmt"
 	"github.com/slocke716/go-tpcc/databases/mysql"
 	"github.com/slocke716/go-tpcc/databases/postgresql"
 	"github.com/slocke716/go-tpcc/tpcc/models"
-	"os"
+	"io/ioutil"
+	"strings"
 	"time"
 )
 
@@ -46,11 +47,18 @@ type Database interface {
 func NewDatabase(driver, uri, dbname, username, password string, transactions bool, findandmodify bool) (Database, error) {
 	var d Database
 	var err error
-	var expandedUri = os.ExpandEnv(uri)
+	var expandedUri string
+	//MYSQL_PWD
+	if strings.HasPrefix(uri, "/") {
+		fmt.Printf("Loading uri from %s", uri)
+		fileStringBytes, err := ioutil.ReadFile(uri)
+		if err != nil {
+			panic(err)
+		}
+		expandedUri = string(fileStringBytes[:])
+	}
 
 	switch driver {
-	case "mongodb":
-		d, err = mongodb.NewMongoDb(expandedUri, dbname, transactions, findandmodify)
 	case "mysql":
 		d, err = mysql.NewMySQL(expandedUri, dbname, transactions)
 	case "postgresql":
