@@ -48,9 +48,8 @@ func NewDatabase(driver, uri, dbname, username, password string, transactions bo
 	var d Database
 	var err error
 	var expandedUri string
-	//MYSQL_PWD
 	if strings.HasPrefix(uri, "/") {
-		fmt.Printf("Loading uri from %s", uri)
+		fmt.Printf("Loading uri from %s\n", uri)
 		fileStringBytes, err := ioutil.ReadFile(uri)
 		if err != nil {
 			panic(err)
